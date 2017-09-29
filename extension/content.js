@@ -4,13 +4,6 @@ class AttentionMonsterReporter {
   constructor() {
     this.WHEEL_SENSITIVITY = 2000; // ms
     this.KEYPRESS_SENSITIVITY = 1000; // ms
-    this.DEBUG = true;
-  }
-
-  log(...args) {
-    if (this.DEBUG) {
-      console.log("[Attention Monster Reporter]", ...args);
-    }
   }
 
   processEvent(e) {
@@ -23,9 +16,7 @@ class AttentionMonsterReporter {
   }
 
   sendReport(e) {
-    let message = this.processEvent(e);
-    chrome.runtime.sendMessage(message);
-    this.log("sent message", message);
+    chrome.runtime.sendMessage(this.processEvent(e));
   }
 
   listen() {
