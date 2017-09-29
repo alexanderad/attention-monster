@@ -29,11 +29,14 @@ class AttentionMonsterListener {
   }
 
   receiveReport(report, sender) {
+    let page = this.parseURL(sender.tab.url);
+    page.icon = sender.tab.faviconUrl;
+
     let event = {
       type: report.type,
       subType: report.subType,
       time: Date.now(),
-      page: this.parseURL(sender.tab.url),
+      page: page,
       windowId: sender.tab.windowId,
       audible: sender.tab.audible
     };
