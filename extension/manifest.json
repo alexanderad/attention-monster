@@ -16,12 +16,12 @@
   "permissions": ["tabs", "storage"],
   "background": {
     "persistent": false,
-    "scripts": ["background.js"]
+    "scripts": ["lib/dexie.min.js", "background.js"]
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["lib/lodash.custom.min.js", "content.js"]
+      "js": ["lib/lodash.min.js", "content.js"]
     }
   ]
 }

@@ -1,21 +1,21 @@
 "use strict";
 
-class AttentionMonsterListener {
-  constructor() {
-    this.DEBUG = true;
-  }
-
+class Logger {
   log(...args) {
-    if (this.DEBUG) {
-      console.log("[Attention Monster Listener]", ...args);
-    }
+    console.log(new Date().toISOString(), ...args);
+  }
+}
+
+class AttentionMonsterListener {
+  constructor(logger, db) {
+    this.log = logger.log;
+    this.db = db;
   }
 
   subscribeToBrowserEvents() {
-    // TODO: icon click stub
-    // chrome.browserAction.onClicked.addListener(function(tab) {
-    //   console.log("icon clicked!");
-    // });
+    chrome.browserAction.onClicked.addListener(function(tab) {
+      chrome.tabs.create({ url: chrome.runtime.getURL("dashboard.html") });
+    });
 
     chrome.runtime.onMessage.addListener(this.receiveReport.bind(this));
   }
@@ -23,24 +23,28 @@ class AttentionMonsterListener {
   parseURL(url) {
     let parser = document.createElement("a");
     parser.href = url;
-    return {
-      domain: parser.hostname
-    };
+    return parser.hostname;
   }
 
   receiveReport(report, sender) {
-    let page = this.parseURL(sender.tab.url);
-    page.icon = sender.tab.faviconUrl;
-
     let event = {
       type: report.type,
       subType: report.subType,
       time: Date.now(),
-      page: page,
-      windowId: sender.tab.windowId,
-      audible: sender.tab.audible
+      page: {
+        window: sender.tab.windowId,
+        domain: this.parseURL(sender.tab.url),
+        icon: sender.tab.icon,
+        audible: sender.tab.audible
+      }
     };
-    this.log("received event", event);
+    this.recordEvent(event);
+  }
+
+  recordEvent(event) {
+    this.db.transaction("rw", this.db.events, function() {
+      this.db.events.add(event);
+    });
   }
 
   run() {
@@ -48,5 +52,13 @@ class AttentionMonsterListener {
   }
 }
 
-let listener = new AttentionMonsterListener();
+let logger = new Logger();
+
+let db = new Dexie("events");
+db.version(1).stores({
+  events:
+    "++id, type, subType, time, page.domain, page.icon, page.window, page.audible"
+});
+
+let listener = new AttentionMonsterListener(logger, db);
 listener.run();
