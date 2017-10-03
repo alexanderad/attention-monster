@@ -14,7 +14,9 @@ class AttentionMonsterListener {
 
   subscribeToBrowserEvents() {
     chrome.browserAction.onClicked.addListener(function(tab) {
-      chrome.tabs.create({ url: chrome.runtime.getURL("dashboard.html") });
+      chrome.tabs.create({
+        url: chrome.runtime.getURL("dashboard/index.html")
+      });
     });
 
     chrome.runtime.onMessage.addListener(this.receiveReport.bind(this));
@@ -62,3 +64,16 @@ db.version(1).stores({
 
 let listener = new AttentionMonsterListener(logger, db);
 listener.run();
+
+// report some stats
+db.events.count(count => console.log("Events in database:", count));
+navigator.storage
+  .estimate()
+  .then(data =>
+    console.log(
+      "Storage used:",
+      (data.usage / 1024 / 1024).toFixed(2),
+      ", available:",
+      (data.quota / 1024 / 1024).toFixed(2)
+    )
+  );
