@@ -31,21 +31,27 @@ class AttentionMonsterListener {
   receiveReport(report, sender) {
     let event = {
       type: report.type,
-      subType: report.subType,
       time: Date.now(),
-      page: {
-        window: sender.tab.windowId,
-        domain: this.parseURL(sender.tab.url),
-        icon: sender.tab.icon,
-        audible: sender.tab.audible
-      }
+      window: sender.tab.windowId,
+      domain: this.parseURL(sender.tab.url),
+      icon: sender.tab.favIconUrl,
+      audible: sender.tab.audible
     };
     this.recordEvent(event);
   }
 
   recordEvent(event) {
-    this.db.transaction("rw", this.db.events, function() {
+    this.db.transaction("rw", this.db.events, this.db.icons, function() {
+      let icon = {
+        icon: event.icon,
+        domain: event.domain
+      };
+      delete event["icon"];
+
       this.db.events.add(event);
+      if (icon.icon !== undefined) {
+        this.db.icons.put(icon);
+      }
     });
   }
 
@@ -54,26 +60,60 @@ class AttentionMonsterListener {
   }
 }
 
+class AttentionMonsterDB {
+  constructor(name) {
+    this.IDLE_MAX_ACCOUNTABLE = 120 * 1000; // milliseconds
+
+    this.db = new Dexie(name);
+    this.db.version(1).stores({
+      // schema is expected to specify only indexed fields
+      events: "++id, type, time, domain", // + window, audible
+      icons: "domain" // + icon
+    });
+  }
+
+  onScreenTimeReport(start, end, intervals) {
+    let withIntervals = intervals !== undefined;
+    /*
+    Returns array sorted by total time
+    [
+      {
+        domain: <domain>, 
+        icon: <icon>,
+        totalTime: <total time in seconds>, 
+        timeIntervals: [
+          [<interval start timestamp>, <interval end timestamp>],
+          ...
+        ]
+      },
+      ...
+    ]
+    */
+    let items = {};
+    let sortedItems = [];
+    let events = this.db.events
+      .where("time")
+      .between(start, end)
+      .each(function(event) {
+        console.log("got event", event);
+      });
+    return sortedItems;
+  }
+}
+
 let logger = new Logger();
+let db = new AttentionMonsterDB("attention-monster");
+let dbRaw = db.db;
 
-let db = new Dexie("events");
-db.version(1).stores({
-  events:
-    "++id, type, subType, time, page.domain, page.icon, page.window, page.audible"
-});
+let start = new Date();
+start.setHours(0, 0, 0, 0);
+let end = new Date();
+end.setHours(23, 59, 59, 999);
+db.onScreenTimeReport(start.getTime(), end.getTime());
 
-let listener = new AttentionMonsterListener(logger, db);
+let listener = new AttentionMonsterListener(logger, dbRaw);
 listener.run();
 
 // report some stats
-db.events.count(count => console.log("Events in database:", count));
-navigator.storage
-  .estimate()
-  .then(data =>
-    console.log(
-      "Storage used:",
-      (data.usage / 1024 / 1024).toFixed(2),
-      ", available:",
-      (data.quota / 1024 / 1024).toFixed(2)
-    )
-  );
+dbRaw.events.count(count => console.log("Events in database:", count));
+dbRaw.icons.count(count => console.log("Icons in database:", count));

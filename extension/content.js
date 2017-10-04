@@ -6,17 +6,8 @@ class AttentionMonsterReporter {
     this.KEYPRESS_SENSITIVITY = 1000; // ms
   }
 
-  processEvent(e) {
-    if (e.type == "wheel") {
-      return { type: "marker", subType: "wheel" };
-    }
-    if (e.type == "keypress") {
-      return { type: "marker", subType: "keypress" };
-    }
-  }
-
   sendReport(e) {
-    chrome.runtime.sendMessage(this.processEvent(e));
+    chrome.runtime.sendMessage({ type: e.type });
   }
 
   listen() {
