@@ -1,8 +1,8 @@
 import logger from "./logger.js";
 import db from "./db.js";
 
-class Listener {
-  subscribeToBrowserEvents() {
+class Collector {
+  subscribeToEvents() {
     chrome.browserAction.onClicked.addListener(function(tab) {
       chrome.tabs.create({
         url: chrome.runtime.getURL("html/index.html")
@@ -46,13 +46,13 @@ class Listener {
   }
 
   run() {
-    this.subscribeToBrowserEvents();
+    this.subscribeToEvents();
   }
 }
 
-var listener = new Listener();
-listener.run();
+var collector = new Collector();
+collector.run();
 
 // report some stats
-db.events.count(count => console.log("Events in database:", count));
-db.icons.count(count => console.log("Icons in database:", count));
+db.events.count(count => logger.log("Events in database:", count));
+db.icons.count(count => logger.log("Icons in database:", count));

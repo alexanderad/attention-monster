@@ -16,16 +16,12 @@
   "permissions": ["tabs", "storage"],
   "background": {
     "persistent": false,
-    "scripts": [
-      "js/lib/dexie.min.js",
-      "js/lib/moment.min.js",
-      "js/dist/collector-bundle.js"
-    ]
+    "scripts": ["js/lib/dexie.min.js", "js/dist/collector-bundle.js"]
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/reporter.js"]
+      "js": ["js/listener.js"]
     }
   ]
 }
