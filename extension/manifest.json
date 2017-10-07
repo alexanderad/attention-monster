@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Attention Monster",
-  "version": "0.2",
+  "version": "0.3",
   "description":
     "Attention Monster helps you to manage your Instant Gratification Monkey by keeping an eye on your browsing habits.",
   "icons": {
@@ -16,12 +16,16 @@
   "permissions": ["tabs", "storage"],
   "background": {
     "persistent": false,
-    "scripts": ["lib/dexie.min.js", "background.js"]
+    "scripts": [
+      "js/lib/dexie.min.js",
+      "js/lib/moment.min.js",
+      "js/background.js"
+    ]
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["lib/lodash.min.js", "content.js"]
+      "js": ["js/lib/lodash.min.js", "js/content.js"]
     }
   ]
 }

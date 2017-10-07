@@ -1,0 +1,158 @@
+<html>
+
+<style>
+    .stacked-bar-container {
+        border: solid 1px #ccc;
+        background-color: #f2f2f2;
+        width: 1000px;
+        height: 30px;
+        margin: 100px;
+        position: relative
+    }
+
+    .stacked-bar-container>.bar {
+        height: 100%;
+        position: absolute;
+    }
+
+    .stacked-bar-container>.bar:hover {
+        background-color: gold;
+    }
+
+    .blue {
+        background-color: #3b5998;
+    }
+
+    .tooltip {
+        display: inline;
+        position: relative;
+    }
+
+    .tooltip:hover:after {
+        background: #333;
+        background: rgba(0, 0, 0, .8);
+        border-radius: 5px;
+        bottom: 26px;
+        color: #fff;
+        content: attr(duration);
+        left: 20%;
+        padding: 5px 15px;
+        position: absolute;
+        z-index: 98;
+        width: 220px;
+    }
+
+    .tooltip:hover:before {
+        border: solid;
+        border-color: #333 transparent;
+        border-width: 6px 6px 0 6px;
+        bottom: 20px;
+        content: "";
+        left: 50%;
+        position: absolute;
+        z-index: 99;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="stacked-bar-container" id="stacked-bar-container"></div>
+
+<script>
+    let chartStart = (new Date(2017, 9, 4, 9, 0).getTime()).toFixed(2);
+    let chartEnd = (new Date(2017, 9, 4, 17, 0).getTime()).toFixed(2);
+
+    let chartWidth = chartEnd - chartStart;
+    console.log('chart start', chartStart);
+    console.log('chart end', chartEnd);
+    console.log('chart width', chartWidth);
+
+    let intervals = [
+        [1507108941756, 1507108945791],
+        [1507108945791, 1507108946924],
+        [1507108946924, 1507108947939],
+        [1507108947939, 1507108948957],
+        [1507108948957, 1507108949961],
+        [1507108949961, 1507108951034],
+        [1507108951034, 1507108952104],
+        [1507108952104, 1507108953123],
+        [1507108953123, 1507108954523],
+        [1507108954523, 1507108955926],
+        [1507108955926, 1507108977078],
+        [1507109150644, 1507109151885],
+        [1507109151885, 1507109152937],
+        [1507109152937, 1507109159156],
+        [1507109159156, 1507109160190],
+        [1507109160190, 1507109161198],
+        [1507109161198, 1507109162198],
+        [1507109162198, 1507109163197],
+        [1507109163197, 1507109164259],
+        [1507109164259, 1507109165260],
+        [1507109165260, 1507109166406],
+        [1507109166406, 1507109188240],
+        [1507110662427, 1507110665149],
+        [1507110665149, 1507110666207],
+        [1507110666207, 1507110667209],
+        [1507110667209, 1507110668210],
+        [1507110668210, 1507110669298],
+        [1507110669298, 1507110714319],
+        [1507110939871, 1507110942180],
+        [1507110942180, 1507110945654],
+        [1507110945654, 1507110947642],
+        [1507110947642, 1507110949643],
+        [1507110949643, 1507110966105],
+        [1507111026593, 1507111030810],
+        [1507111030810, 1507111034268],
+        [1507111034268, 1507111038433],
+        [1507111038433, 1507111041158],
+        [1507111041158, 1507111045813],
+        [1507111120167, 1507111122207],
+        [1507111122207, 1507111124219],
+        [1507111124219, 1507111126222],
+        [1507111126222, 1507111128223],
+        [1507111128223, 1507111130225],
+        [1507111130225, 1507111132225],
+        [1507111132225, 1507111134411],
+        [1507111134411, 1507111136412],
+        [1507111136412, 1507111138414],
+        [1507111138414, 1507111140433],
+        [1507111140433, 1507111142437],
+        [1507111142437, 1507111143072],
+        [1507111143072, 1507111144557],
+        [1507111144557, 1507111146192],
+        [1507111146192, 1507111147192],
+        [1507111147192, 1507111148194],
+        [1507111148194, 1507111149238],
+        [1507111149238, 1507111150448],
+        [1507111150448, 1507111151450],
+        [1507111151450, 1507111153582],
+        [1507111153582, 1507111154679],
+        [1507111154679, 1507111160059],
+        [1507111224699, 1507111294430],
+        [1507111464222, 1507111557045]
+    ];
+
+    for (let i = 0; i < intervals.length; i++) {
+        let start = intervals[i][0];
+        let end = intervals[i][1];
+        let width = (end - start) / chartWidth * 100;
+        let offset = (start - chartStart) / chartWidth * 100;
+
+        console.log('interval', intervals[i], 'width', width, 'offset', offset);
+
+        let doc = $(".stacked-bar-container");
+        doc.append(
+            $(`
+                <span 
+                    class="bar blue tooltip" 
+                    style="left: ${offset}%; width: ${width}%"
+                    duration="${(end - start) / 1000} seconds"
+                >
+                    &nbsp;
+                </span>
+            `)
+        );
+    }
+
+</script>
+
+
+</html>

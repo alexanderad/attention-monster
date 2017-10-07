@@ -1,5 +1,8 @@
 "use strict";
 
+// import { Dexie } from "./lib/dexie.min.js";
+// import { moment } from "./lib/moment.min.js";
+
 class Logger {
   log(...args) {
     console.log(new Date().toISOString(), ...args);
@@ -15,7 +18,7 @@ class AttentionMonsterListener {
   subscribeToBrowserEvents() {
     chrome.browserAction.onClicked.addListener(function(tab) {
       chrome.tabs.create({
-        url: chrome.runtime.getURL("dashboard/index.html")
+        url: chrome.runtime.getURL("html/index.html")
       });
     });
 
@@ -62,7 +65,7 @@ class AttentionMonsterListener {
 
 class AttentionMonsterDB {
   constructor(name) {
-    this.IDLE_MAX_ACCOUNTABLE = 120 * 1000; // milliseconds
+    this.IDLE_MAX_ACCOUNTABLE = 60 * 1000; // milliseconds
 
     this.db = new Dexie(name);
     this.db.version(1).stores({
@@ -71,45 +74,11 @@ class AttentionMonsterDB {
       icons: "domain" // + icon
     });
   }
-
-  onScreenTimeReport(start, end, intervals) {
-    let withIntervals = intervals !== undefined;
-    /*
-    Returns array sorted by total time
-    [
-      {
-        domain: <domain>, 
-        icon: <icon>,
-        totalTime: <total time in seconds>, 
-        timeIntervals: [
-          [<interval start timestamp>, <interval end timestamp>],
-          ...
-        ]
-      },
-      ...
-    ]
-    */
-    let items = {};
-    let sortedItems = [];
-    let events = this.db.events
-      .where("time")
-      .between(start, end)
-      .each(function(event) {
-        console.log("got event", event);
-      });
-    return sortedItems;
-  }
 }
 
 let logger = new Logger();
 let db = new AttentionMonsterDB("attention-monster");
 let dbRaw = db.db;
-
-let start = new Date();
-start.setHours(0, 0, 0, 0);
-let end = new Date();
-end.setHours(23, 59, 59, 999);
-db.onScreenTimeReport(start.getTime(), end.getTime());
 
 let listener = new AttentionMonsterListener(logger, dbRaw);
 listener.run();
