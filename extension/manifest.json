@@ -19,13 +19,13 @@
     "scripts": [
       "js/lib/dexie.min.js",
       "js/lib/moment.min.js",
-      "js/background.js"
+      "js/dist/collector-bundle.js"
     ]
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/lib/lodash.min.js", "js/content.js"]
+      "js": ["js/reporter.js"]
     }
   ]
 }
