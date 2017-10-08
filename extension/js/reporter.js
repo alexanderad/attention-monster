@@ -67,6 +67,29 @@ class Reporter {
           });
       });
   }
+
+  frequencyChart(chartStart, chartEnd, intervals) {
+    chartStart = chartStart.toFixed(2);
+    chartEnd = chartEnd.toFixed(2);
+    let chartWidth = chartEnd - chartStart;
+    let bar = $("<div/>", {
+      class: "stacked-bar-container",
+      style: "min-width: 100px"
+    });
+
+    for (let i = 0; i < intervals.length; i++) {
+      let start = intervals[i][0];
+      let end = intervals[i][1];
+      let width = (end - start) / chartWidth * 100;
+      let offset = (start - chartStart) / chartWidth * 100;
+      bar.append(
+        $(
+          `<span class="bar" style="left: ${offset}%; width: ${width}%">&nbsp;</span>`
+        )
+      );
+    }
+    return bar;
+  }
 }
 
 const reporter = new Reporter();

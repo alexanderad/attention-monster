@@ -1,0 +1,35 @@
+.stacked-bar-container {
+  border: solid 1px #f2f2f2;
+  height: 20px;
+  position: relative;
+}
+
+.stacked-bar-container > .bar {
+  height: 100%;
+  background-color: #33c3f0;
+  position: absolute;
+}
+
+.stacked-bar-container > .bar:hover {
+  background-color: gold;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.record-row-icon {
+  display: table;
+}
+
+.record-row-icon > span,
+.record-row-icon > span > img {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.record-row-icon > span > img {
+  padding-right: 5px;
+}
