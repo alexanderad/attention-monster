@@ -5,17 +5,29 @@ import reporter from "./reporter.js";
 let start = moment()
   .startOf("day")
   .valueOf();
-let startOfWorkDay = moment(start)
-  .hours(10)
-  .valueOf();
-let endOfWorkDay = moment(start)
-  .hours(21)
-  .valueOf();
 let end = moment()
   .endOf("day")
   .valueOf();
 
-reporter.onScreenTimeReport(start, end).then(records => {
+reporter.onScreenTimeReport(start, end).then(data => {
+  let records = data.records;
+  let stats = data.stats;
+
+  $("#id-total-time").text(moment.duration(stats.totalTime).humanize());
+  $("#id-total-time").attr(
+    "title",
+    moment
+      .duration(stats.totalTime)
+      .asMinutes()
+      .toFixed(0) + " minutes"
+  );
+
+  $("#id-day-time").text(
+    `${moment(stats.dayStart).format("HH:mm")} - ${moment(stats.dayEnd).format(
+      "HH:mm"
+    )}`
+  );
+
   let grid = $("#id-data>tbody");
   records.forEach(function(record, idx) {
     let recordRendered = `
@@ -32,8 +44,8 @@ reporter.onScreenTimeReport(start, end).then(records => {
     `;
     grid.append(recordRendered);
     let frequencyChart = reporter.frequencyChart(
-      startOfWorkDay,
-      endOfWorkDay,
+      stats.dayStart - 15 * 60 * 1000,
+      stats.dayEnd + 15 * 60 * 1000,
       record.timeIntervals
     );
     $(`#id-frequency-${idx}`).append(frequencyChart);

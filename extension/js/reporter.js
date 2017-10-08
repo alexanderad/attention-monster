@@ -35,7 +35,8 @@ class Reporter {
           .where("time")
           .between(start, end)
           .toArray(items => {
-            let results = {};
+            let records = {};
+            let stats = { totalTime: 0, dayStart: start, dayEnd: end };
             logger.log("items to account", items.length);
             for (let i = 1; i < items.length; i++) {
               let domain = items[i - 1].domain;
@@ -47,23 +48,29 @@ class Reporter {
                 items[i - 1].time,
                 items[i - 1].time + accountableTime
               ];
-              if (results[domain] === undefined) {
-                results[domain] = {
+              if (records[domain] === undefined) {
+                records[domain] = {
                   domain: domain,
                   totalTime: 0,
                   timeIntervals: [],
                   icon: iconLookup[domain]
                 };
               }
-              results[domain].totalTime += accountableTime;
-              results[domain].timeIntervals.push(interval);
+              records[domain].totalTime += accountableTime;
+              records[domain].timeIntervals.push(interval);
+
+              stats.totalTime += accountableTime;
+            }
+            if (items.length > 0) {
+              stats.dayStart = items[0].time;
+              stats.dayEnd = items[items.length - 1].time;
             }
 
-            results = Object.keys(results).map(key => results[key]);
-            results.sort(function(a, b) {
+            records = Object.keys(records).map(key => records[key]);
+            records.sort(function(a, b) {
               return b.totalTime - a.totalTime;
             });
-            return results;
+            return { records: records, stats: stats };
           });
       });
   }
