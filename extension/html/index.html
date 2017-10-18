@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Attention Monster</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/skeleton.css">
     <link rel="stylesheet" href="../css/dashboard.css">
@@ -13,41 +14,97 @@
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="ten column" style="margin-top: 5%">
-                <h5>Overview</h5>
-                <ul>
-                    <li>Total Time:
-                        <span id="id-total-time"></span>
-                    </li>
-                    <li>
-                        Screen Day:
-                        <span id="id-day-time"></span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class="ten column">
-            </div>
-        </div>
-        <div class="row">
-            <div class="ten column">
-                <h5>On Screen Time</h5>
 
-                <table id="id-data">
-                    <thead>
-                        <tr>
-                            <th>Destination</th>
-                            <th>Time</th>
-                            <th style="min-width: 300px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <!-- container with overall header -->
+        <div class="row header" id="id-overall-header-container">
+            <div class="one-half column">
+                <h5 class="very-middle-container">
+                    <i class="material-icons very-middle icon-left">assignment</i>Overview
+                </h5>
+            </div>
+            <div class="one-half column">
+                <h5 class="very-middle-container u-pull-right">
+                    <a id="id-prev-day-link" href="#" class="no-underline very-middle">
+                        <i class="material-icons very-middle icon-left">arrow_back</i>
+                    </a>
+                    <span id="id-current-day" class="very-middle"></span>
+                    <a id="id-next-day-link" href="#" class="no-underline very-middle">
+                        <i class="material-icons very-middle icon-right">arrow_forward</i>
+                    </a>
+                </h5>
             </div>
         </div>
+
+        <!-- container with loading indicator -->
+        <div class="row hidden" id="id-loading-container">
+            <div class="ten column center">
+                <h5 class="loading">
+                    <span>uno</span>
+                    <span>dos</span>
+                    <span>tres</span>
+                </h5>
+            </div>
+        </div>
+
+        <!-- container with message "No data" -->
+        <div class="row hidden" id="id-no-data-container">
+            <div class="ten column center">
+                <h5>No data for this date</h5>
+            </div>
+        </div>
+
+        <!-- container with all the data, including stats -->
+        <div class="row hidden" id="id-data-container">
+            <div class="row">
+                <div class="one-half column">
+                    <ul>
+                        <li>Total Time is about
+                            <strong>
+                                <span id="id-total-time"></span>
+                            </strong>
+                        </li>
+                        <li>
+                            Screen day is
+                            <span id="id-day-time"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="one-half column">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="ten column">
+                    <h5 class="very-middle-container">
+                        <i class="material-icons very-middle icon-left">timer</i>On Screen Time
+                    </h5>
+
+                    <table id="id-data" class="u-full-width">
+                        <thead>
+                            <tr>
+                                <th>Destination</th>
+                                <th>Time</th>
+                                <th style="min-width: 300px"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- container with overall footer -->
+        <div class="row hidden footer u-pull-right" id="id-footer-container">
+            <div class="ten column">
+                <span class="very-middle-container font-size-75">
+                    Sincerely yours, Attention Monster
+                    <i class="material-icons very-middle icon-right font-size-80">favorite</i>
+                </span>
+            </div>
+        </div>
+
     </div>
 </body>
 

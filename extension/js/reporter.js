@@ -40,14 +40,8 @@ class Reporter {
             logger.log("items to account", items.length);
             for (let i = 1; i < items.length; i++) {
               let domain = items[i - 1].domain;
-              let accountableTime = Math.min(
-                items[i].time - items[i - 1].time,
-                this.IDLE_MAX_ACCOUNTABLE
-              );
-              let interval = [
-                items[i - 1].time,
-                items[i - 1].time + accountableTime
-              ];
+              let accountableTime = Math.min(items[i].time - items[i - 1].time, this.IDLE_MAX_ACCOUNTABLE);
+              let interval = [items[i - 1].time, items[i - 1].time + accountableTime];
               if (records[domain] === undefined) {
                 records[domain] = {
                   domain: domain,
@@ -70,6 +64,9 @@ class Reporter {
             records.sort(function(a, b) {
               return b.totalTime - a.totalTime;
             });
+            if (!records.length) {
+              throw new Error("No data");
+            }
             return { records: records, stats: stats };
           });
       });
@@ -89,11 +86,7 @@ class Reporter {
       let end = intervals[i][1];
       let width = (end - start) / chartWidth * 100;
       let offset = (start - chartStart) / chartWidth * 100;
-      bar.append(
-        $(
-          `<span class="bar" style="left: ${offset}%; width: ${width}%">&nbsp;</span>`
-        )
-      );
+      bar.append($(`<span class="bar" style="left: ${offset}%; width: ${width}%">&nbsp;</span>`));
     }
     return bar;
   }

@@ -2,52 +2,106 @@ import logger from "./logger.js";
 import db from "./db.js";
 import reporter from "./reporter.js";
 
-let start = moment()
-  .startOf("day")
-  .valueOf();
-let end = moment()
-  .endOf("day")
-  .valueOf();
+function renderReport(reportDate) {
+  let start = reportDate
+    .clone()
+    .startOf("day")
+    .valueOf();
+  let end = reportDate
+    .clone()
+    .endOf("day")
+    .valueOf();
 
-reporter.onScreenTimeReport(start, end).then(data => {
-  let records = data.records;
-  let stats = data.stats;
+  Promise.resolve().then(() => {
+    $("#id-prev-day-link").attr(
+      "href",
+      reportDate
+        .clone()
+        .subtract(1, "day")
+        .format("#YYYY-MM-DD")
+    );
+    $("#id-current-day").text(reportDate.format("MMMM DD, YYYY"));
+    $("#id-next-day-link").attr(
+      "href",
+      reportDate
+        .clone()
+        .add(1, "day")
+        .format("#YYYY-MM-DD")
+    );
 
-  $("#id-total-time").text(moment.duration(stats.totalTime).humanize());
-  $("#id-total-time").attr(
-    "title",
-    moment
-      .duration(stats.totalTime)
-      .asMinutes()
-      .toFixed(0) + " minutes"
-  );
+    $("#id-no-data-container").hide();
+    $("#id-data-container").hide();
+    $("#id-loading-container").show();
+    $("#id-data > tbody").empty();
+    $("#id-total-time").empty();
+    $("#id-day-time").empty();
+  });
 
-  $("#id-day-time").text(
-    `${moment(stats.dayStart).format("HH:mm")} - ${moment(stats.dayEnd).format(
-      "HH:mm"
-    )}`
-  );
+  reporter
+    .onScreenTimeReport(start, end)
+    .then(data => {
+      let records = data.records;
+      let stats = data.stats;
 
-  let grid = $("#id-data>tbody");
-  records.forEach(function(record, idx) {
-    let recordRendered = `
+      $("#id-total-time").text(moment.duration(stats.totalTime).humanize());
+      $("#id-total-time").attr(
+        "title",
+        moment
+          .duration(stats.totalTime)
+          .asMinutes()
+          .toFixed(0) + " minutes"
+      );
+
+      $("#id-day-time").html(
+        `<strong>${moment(stats.dayStart).format("HH:mm")}</strong> till 
+    <strong>${moment(stats.dayEnd).format("HH:mm")}</strong>`
+      );
+
+      let grid = $("#id-data > tbody");
+      records.forEach(function(record, idx) {
+        let iconUrl = record.icon;
+        if (iconUrl === undefined) iconUrl = "../icons/default-favicon.png";
+        let recordRendered = `
         <tr>
             <td>
                 <div class="record-row-icon truncate">
-                    <span><img src="${record.icon}" width="16"></span>
+                    <span><img src="${iconUrl}" width="16"></span>
                     <span>${record.domain}</span>
                 </div>
             </td>
-            <td>${moment.duration(record.totalTime).humanize()}</td>
+            <td class="no-wrap">${moment.duration(record.totalTime).humanize()}</td>
             <td id="id-frequency-${idx}"></td>
+            <td class="no-wrap">${record.timeIntervals.length} interactions</td>
         </tr>
     `;
-    grid.append(recordRendered);
-    let frequencyChart = reporter.frequencyChart(
-      stats.dayStart - 15 * 60 * 1000,
-      stats.dayEnd + 15 * 60 * 1000,
-      record.timeIntervals
-    );
-    $(`#id-frequency-${idx}`).append(frequencyChart);
+        grid.append(recordRendered);
+        let frequencyChart = reporter.frequencyChart(
+          stats.dayStart - 15 * 60 * 1000,
+          stats.dayEnd + 15 * 60 * 1000,
+          record.timeIntervals
+        );
+        $(`#id-frequency-${idx}`).append(frequencyChart);
+      });
+
+      $("#id-loading-container").hide();
+      $("#id-data-container").fadeIn();
+    })
+    .catch(err => {
+      setTimeout(() => {
+        $("#id-loading-container").hide();
+        $("#id-no-data-container").fadeIn();
+      }, 400);
+    });
+}
+
+$(document).ready(function() {
+  $(window).bind("hashchange", function() {
+    var reportDate = moment();
+    var hashDate = location.hash;
+    if (hashDate) reportDate = moment(hashDate, "YYYY-MM-DD");
+    renderReport(reportDate);
   });
+
+  // initial hash change
+  $(window).trigger("hashchange");
 });
