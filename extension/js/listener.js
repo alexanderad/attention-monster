@@ -1,9 +1,9 @@
 (function() {
   "use strict";
   /**
- * Listens to user activity in browser and sends out
- * filtered events to collector.
- */
+   * Listens to user activity in browser and sends out
+   * filtered events to collector.
+   */
 
   class Listener {
     constructor() {
@@ -44,8 +44,8 @@
     }
 
     /*
-  * lodash.debounce: https://github.com/lodash/lodash/blob/master/debounce.js
-  */
+    * lodash.debounce: https://github.com/lodash/lodash/blob/master/debounce.js
+    */
     debounce(func, wait, options) {
       let lastArgs, lastThis, maxWait, result, timerId, lastCallTime;
 

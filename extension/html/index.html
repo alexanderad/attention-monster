@@ -17,22 +17,37 @@
 
         <!-- container with overall header -->
         <div class="row header" id="id-overall-header-container">
-            <div class="one-half column">
-                <h5 class="very-middle-container">
-                    <i class="material-icons very-middle icon-left">assignment</i>Overview
-                </h5>
+
+            <div class="row">
+                <div class="one-half column">
+                    <h5 class="very-middle-container">
+                        <img class="logo" src="../icons/icon128.png">
+                        <a class="menu-link active" href="">Daily</a>
+                        <a class="menu-link" href="">Weekly</a>
+                        <a class="menu-link" href="">Monthly</a>
+                        <a class="menu-link" href="">All Time</a>
+                    </h5>
+                </div>
+                <div class="one-half column">
+                    <h5 class="very-middle-container u-pull-right">
+                        <a id="id-prev-day-link" href="#" class="no-underline very-middle">
+                            <i class="material-icons very-middle icon-left">keyboard_arrow_left</i>
+                        </a>
+                        <span id="id-current-day" class="very-middle"></span>
+                        <a id="id-next-day-link" href="#" class="no-underline very-middle">
+                            <i class="material-icons very-middle icon-right">keyboard_arrow_right</i>
+                        </a>
+                    </h5>
+                </div>
             </div>
-            <div class="one-half column">
-                <h5 class="very-middle-container u-pull-right">
-                    <a id="id-prev-day-link" href="#" class="no-underline very-middle">
-                        <i class="material-icons very-middle icon-left">arrow_back</i>
-                    </a>
-                    <span id="id-current-day" class="very-middle"></span>
-                    <a id="id-next-day-link" href="#" class="no-underline very-middle">
-                        <i class="material-icons very-middle icon-right">arrow_forward</i>
-                    </a>
-                </h5>
+
+            <div class="row">
+                <div class="twelve columns no-wrap">
+                    <i class="material-icons very-middle icon-left" style="display: inline">search</i>
+                    <input id="id-search-bar" class="u-full-width" type="search" placeholder="Search history">
+                </div>
             </div>
+
         </div>
 
         <!-- container with loading indicator -->
@@ -55,54 +70,17 @@
 
         <!-- container with all the data, including stats -->
         <div class="row hidden" id="id-data-container">
-            <div class="row">
-                <div class="one-half column">
-                    <ul>
-                        <li>Total Time is about
-                            <strong>
-                                <span id="id-total-time"></span>
-                            </strong>
-                        </li>
-                        <li>
-                            Screen day is
-                            <span id="id-day-time"></span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="one-half column">
 
-                </div>
-            </div>
             <div class="row">
-                <div class="ten column">
-                    <h5 class="very-middle-container">
-                        <i class="material-icons very-middle icon-left">timer</i>On Screen Time
-                    </h5>
-
+                <div class="five columns" style="padding-left: 25px">
                     <table id="id-data" class="u-full-width">
-                        <thead>
-                            <tr>
-                                <th>Destination</th>
-                                <th>Time</th>
-                                <th style="min-width: 300px"></th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                         </tbody>
                     </table>
                 </div>
+                <div class="five columns"></div>
             </div>
-        </div>
 
-        <!-- container with overall footer -->
-        <div class="row hidden footer u-pull-right" id="id-footer-container">
-            <div class="ten column">
-                <span class="very-middle-container font-size-75">
-                    Sincerely yours, Attention Monster
-                    <i class="material-icons very-middle icon-right font-size-80">favorite</i>
-                </span>
-            </div>
         </div>
 
     </div>

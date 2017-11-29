@@ -1,8 +1,9 @@
 import logger from "./logger.js";
 import db from "./db.js";
 import reporter from "./reporter.js";
+import debounce from "./lib/debounce.js";
 
-function renderReport(reportDate) {
+function renderReport(reportDate, query) {
   let start = reportDate
     .clone()
     .startOf("day")
@@ -20,7 +21,16 @@ function renderReport(reportDate) {
         .subtract(1, "day")
         .format("#YYYY-MM-DD")
     );
-    $("#id-current-day").text(reportDate.format("MMMM DD, YYYY"));
+    let isToday =
+      moment()
+        .startOf("day")
+        .valueOf() == start;
+    if (isToday) {
+      $("#id-current-day").text("Today");
+    } else {
+      $("#id-current-day").text(reportDate.format("MMMM DD, YYYY"));
+    }
+
     $("#id-next-day-link").attr(
       "href",
       reportDate
@@ -38,7 +48,7 @@ function renderReport(reportDate) {
   });
 
   reporter
-    .onScreenTimeReport(start, end)
+    .onScreenTimeReport(start, end, query)
     .then(data => {
       let records = data.records;
       let stats = data.stats;
@@ -62,25 +72,27 @@ function renderReport(reportDate) {
         let iconUrl = record.icon;
         if (iconUrl === undefined) iconUrl = "../icons/default-favicon.png";
         let recordRendered = `
-        <tr>
-            <td>
-                <div class="record-row-icon truncate">
-                    <span><img src="${iconUrl}" width="16"></span>
-                    <span>${record.domain}</span>
-                </div>
-            </td>
-            <td class="no-wrap">${moment.duration(record.totalTime).humanize()}</td>
-            <td id="id-frequency-${idx}"></td>
-            <td class="no-wrap">${record.timeIntervals.length} interactions</td>
-        </tr>
-    `;
+            <tr>
+                <td>
+                    <div class="record-row-icon truncate">
+                        <span><img src="${iconUrl}" width="16"></span>
+                        <span>${record.domain}</span>
+                    </div>
+                </td>
+                <td class="no-wrap">${moment
+                  .duration(record.totalTime)
+                  .humanize()}</td>
+            </tr>
+        `;
         grid.append(recordRendered);
+        /*
         let frequencyChart = reporter.frequencyChart(
           stats.dayStart - 15 * 60 * 1000,
           stats.dayEnd + 15 * 60 * 1000,
           record.timeIntervals
         );
         $(`#id-frequency-${idx}`).append(frequencyChart);
+        */
       });
 
       $("#id-loading-container").hide();
@@ -94,14 +106,33 @@ function renderReport(reportDate) {
     });
 }
 
+function getReportDate() {
+  var reportDate = moment();
+  var hashDate = location.hash;
+  if (hashDate) reportDate = moment(hashDate, "YYYY-MM-DD");
+  return reportDate;
+}
+
+function search(e) {
+  var reportDate = getReportDate();
+
+  var query = $.trim(e.target.value);
+  if (query.length >= 2) {
+    renderReport(reportDate, query);
+  } else {
+    renderReport(reportDate);
+  }
+}
+
 $(document).ready(function() {
-  $(window).bind("hashchange", function() {
-    var reportDate = moment();
-    var hashDate = location.hash;
-    if (hashDate) reportDate = moment(hashDate, "YYYY-MM-DD");
+  $(window).bind("hashchange", () => {
+    var reportDate = getReportDate();
     renderReport(reportDate);
   });
 
   // initial hash change
   $(window).trigger("hashchange");
+
+  // subscribe to search updates
+  $("#id-search-bar").keyup(debounce(search, 250, {}));
 });

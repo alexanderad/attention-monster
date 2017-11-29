@@ -42,6 +42,22 @@
   display: table;
 }
 
+.menu-link {
+  padding-right: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+a.active {
+  font-weight: bold;
+}
+
+.logo {
+  padding-right: 20px;
+  width: 28px;
+  vertical-align: -4px;
+}
+
 .very-middle {
   vertical-align: middle;
   display: table-cell;
@@ -49,10 +65,12 @@
 
 .very-middle-container .icon-left {
   padding-right: 5px;
+  font-size: 32px;
 }
 
 .very-middle-container .icon-right {
   padding-left: 5px;
+  font-size: 32px;
 }
 
 .header {

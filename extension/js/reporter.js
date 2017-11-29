@@ -6,7 +6,7 @@ class Reporter {
     this.IDLE_MAX_ACCOUNTABLE = 60 * 1000; // milliseconds
   }
 
-  onScreenTimeReport(start, end) {
+  onScreenTimeReport(start, end, query) {
     /*
       Returns a promise with results: array sorted by total time
       [
@@ -34,14 +34,27 @@ class Reporter {
         return db.events
           .where("time")
           .between(start, end)
+          .filter(function(item) {
+            if (!query) {
+              return item;
+            }
+            return item.domain.includes(query);
+          })
           .toArray(items => {
             let records = {};
             let stats = { totalTime: 0, dayStart: start, dayEnd: end };
             logger.log("items to account", items.length);
+
             for (let i = 1; i < items.length; i++) {
               let domain = items[i - 1].domain;
-              let accountableTime = Math.min(items[i].time - items[i - 1].time, this.IDLE_MAX_ACCOUNTABLE);
-              let interval = [items[i - 1].time, items[i - 1].time + accountableTime];
+              let accountableTime = Math.min(
+                items[i].time - items[i - 1].time,
+                this.IDLE_MAX_ACCOUNTABLE
+              );
+              let interval = [
+                items[i - 1].time,
+                items[i - 1].time + accountableTime
+              ];
               if (records[domain] === undefined) {
                 records[domain] = {
                   domain: domain,
@@ -86,7 +99,13 @@ class Reporter {
       let end = intervals[i][1];
       let width = (end - start) / chartWidth * 100;
       let offset = (start - chartStart) / chartWidth * 100;
-      bar.append($(`<span class="bar" style="left: ${offset}%; width: ${width}%">&nbsp;</span>`));
+      bar.append(
+        $(
+          `<span class="bar" style="left: ${offset}%; width: ${
+            width
+          }%">&nbsp;</span>`
+        )
+      );
     }
     return bar;
   }
