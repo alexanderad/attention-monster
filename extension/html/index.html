@@ -22,19 +22,19 @@
                 <div class="one-half column">
                     <h5 class="very-middle-container">
                         <img class="logo" src="../icons/icon128.png">
-                        <a class="menu-link active" href="">Daily</a>
-                        <a class="menu-link" href="">Weekly</a>
-                        <a class="menu-link" href="">Monthly</a>
-                        <a class="menu-link" href="">All Time</a>
+                        <a class="menu-link active" href="#daily">Daily</a>
+                        <a class="menu-link" href="#weekly">Weekly</a>
+                        <a class="menu-link" href="#monthly">Monthly</a>
+                        <a class="menu-link" href="#alltime">All Time</a>
                     </h5>
                 </div>
                 <div class="one-half column">
                     <h5 class="very-middle-container u-pull-right">
-                        <a id="id-prev-day-link" href="#" class="no-underline very-middle">
+                        <a id="id-prev-interval-link" href="#" class="no-underline very-middle">
                             <i class="material-icons very-middle icon-left">keyboard_arrow_left</i>
                         </a>
-                        <span id="id-current-day" class="very-middle"></span>
-                        <a id="id-next-day-link" href="#" class="no-underline very-middle">
+                        <span id="id-current-interval" class="very-middle"></span>
+                        <a id="id-next-interval-link" href="#" class="no-underline very-middle">
                             <i class="material-icons very-middle icon-right">keyboard_arrow_right</i>
                         </a>
                     </h5>
@@ -64,7 +64,7 @@
         <!-- container with message "No data" -->
         <div class="row hidden" id="id-no-data-container">
             <div class="ten column center">
-                <h5>No data for this date</h5>
+                <h5 id="id-no-data-message"></h5>
             </div>
         </div>
 

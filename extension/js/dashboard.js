@@ -2,70 +2,38 @@ import logger from "./logger.js";
 import db from "./db.js";
 import reporter from "./reporter.js";
 import debounce from "./lib/debounce.js";
+import randomFutureQuote from "./future.js";
 
-function renderReport(reportDate, query) {
-  let start = reportDate
-    .clone()
-    .startOf("day")
-    .valueOf();
-  let end = reportDate
-    .clone()
-    .endOf("day")
-    .valueOf();
-
+function renderReport(reportInterval, query) {
   Promise.resolve().then(() => {
-    $("#id-prev-day-link").attr(
-      "href",
-      reportDate
-        .clone()
-        .subtract(1, "day")
-        .format("#YYYY-MM-DD")
-    );
-    let isToday =
-      moment()
-        .startOf("day")
-        .valueOf() == start;
-    if (isToday) {
-      $("#id-current-day").text("Today");
-    } else {
-      $("#id-current-day").text(reportDate.format("MMMM DD, YYYY"));
+    $("#id-prev-interval-link").attr("href", reportInterval.prevHash);
+    $("#id-next-interval-link").attr("href", reportInterval.nextHash);
+    $("#id-current-interval").text(reportInterval.display);
+
+    $("#id-no-data-container, #id-data-container").hide();
+    // $("#id-loading-container").show();
+    $("#id-data > tbody").empty();
+
+    // console.log(reportInterval.start);
+    // console.log(moment());
+
+    if (reportInterval.start > moment()) {
+      console.log("here");
+      var quote = randomFutureQuote();
+      $("#id-no-data-message").html(
+        `<div>${quote[0]}</div>
+        <div style="float:right">&mdash; ${quote[1]}</div>
+        `
+      );
+      $("#id-no-data-container").fadeIn();
     }
 
-    $("#id-next-day-link").attr(
-      "href",
-      reportDate
-        .clone()
-        .add(1, "day")
-        .format("#YYYY-MM-DD")
-    );
-
-    $("#id-no-data-container").hide();
-    $("#id-data-container").hide();
-    $("#id-loading-container").show();
-    $("#id-data > tbody").empty();
-    $("#id-total-time").empty();
-    $("#id-day-time").empty();
-  });
-
+    /*
   reporter
     .onScreenTimeReport(start, end, query)
     .then(data => {
       let records = data.records;
       let stats = data.stats;
-
-      $("#id-total-time").text(moment.duration(stats.totalTime).humanize());
-      $("#id-total-time").attr(
-        "title",
-        moment
-          .duration(stats.totalTime)
-          .asMinutes()
-          .toFixed(0) + " minutes"
-      );
-
-      $("#id-day-time").html(
-        `<strong>${moment(stats.dayStart).format("HH:mm")}</strong> till 
-    <strong>${moment(stats.dayEnd).format("HH:mm")}</strong>`
-      );
 
       let grid = $("#id-data > tbody");
       records.forEach(function(record, idx) {
@@ -85,14 +53,7 @@ function renderReport(reportDate, query) {
             </tr>
         `;
         grid.append(recordRendered);
-        /*
-        let frequencyChart = reporter.frequencyChart(
-          stats.dayStart - 15 * 60 * 1000,
-          stats.dayEnd + 15 * 60 * 1000,
-          record.timeIntervals
-        );
-        $(`#id-frequency-${idx}`).append(frequencyChart);
-        */
+        
       });
 
       $("#id-loading-container").hide();
@@ -101,16 +62,152 @@ function renderReport(reportDate, query) {
     .catch(err => {
       setTimeout(() => {
         $("#id-loading-container").hide();
+        $("#id-no-data-message").text("No data for this date.");
         $("#id-no-data-container").fadeIn();
       }, 400);
     });
+    */
+  });
 }
 
-function getReportDate() {
-  var reportDate = moment();
-  var hashDate = location.hash;
-  if (hashDate) reportDate = moment(hashDate, "YYYY-MM-DD");
-  return reportDate;
+function getReportInterval() {
+  var now = moment();
+  var reportInterval = {};
+  var hash = location.hash || "#daily";
+  var hashSplit = hash.split("/");
+  var interval = hashSplit[0];
+
+  if (interval == "#daily") {
+    var reportDate;
+    if (hashSplit.length == 1) {
+      reportDate = now;
+    } else {
+      reportDate = moment(hashSplit[1], "YYYY-MM-DD");
+    }
+
+    var reportInterval = {
+      interval: "daily",
+      start: reportDate.clone().startOf("day"),
+      end: reportDate.clone().endOf("day"),
+      prevHash:
+        "#daily/" +
+        reportDate
+          .clone()
+          .add(-1, "day")
+          .format("YYYY-MM-DD"),
+      nextHash:
+        "#daily/" +
+        reportDate
+          .clone()
+          .add(1, "day")
+          .format("YYYY-MM-DD")
+    };
+    var isToday =
+      moment()
+        .startOf("day")
+        .valueOf() == reportInterval.start;
+    if (isToday) {
+      reportInterval.display = "Today";
+    } else {
+      reportInterval.display = reportDate.format("MMMM D, YYYY");
+    }
+  }
+
+  if (interval == "#weekly") {
+    var reportYear, reportWeek;
+    if (hashSplit.length == 1) {
+      reportYear = now.year();
+      reportWeek = now.week();
+    } else {
+      reportYear = hashSplit[1];
+      reportWeek = hashSplit[2];
+    }
+
+    var week = moment(reportYear + "-01-01").add(reportWeek - 1, "weeks");
+    reportInterval = {
+      interval: "weekly",
+      start: week
+        .clone()
+        .startOf("week")
+        .startOf("day"),
+      end: week
+        .clone()
+        .endOf("week")
+        .endOf("day")
+    };
+    var nextWeek = reportInterval.start.clone().add(1, "week");
+    var prevWeek = reportInterval.start.clone().add(-1, "week");
+    reportInterval.nextHash =
+      "#weekly/" + nextWeek.year() + "/" + nextWeek.week();
+    reportInterval.prevHash =
+      "#weekly/" + prevWeek.year() + "/" + prevWeek.week();
+
+    var isThisWeek =
+      moment()
+        .startOf("week")
+        .startOf("day")
+        .valueOf() == reportInterval.start;
+    if (isThisWeek) {
+      reportInterval.display = "This week";
+    } else {
+      reportInterval.display =
+        "Week of " +
+        reportInterval.start.format("MMMM D-") +
+        reportInterval.end.format("D, YYYY");
+    }
+  }
+
+  if (interval == "#monthly") {
+    var reportYear, reportMonth;
+    if (hashSplit.length == 1) {
+      reportYear = now.year();
+      reportMonth = now.month();
+    } else {
+      reportYear = hashSplit[1];
+      reportMonth = hashSplit[2];
+    }
+
+    var month = moment(reportYear + "-01-01").month(reportMonth);
+    reportInterval = {
+      interval: "monthly",
+      start: month
+        .clone()
+        .startOf("month")
+        .startOf("day"),
+      end: month
+        .clone()
+        .endOf("month")
+        .endOf("day")
+    };
+    var nextMonth = reportInterval.end.clone().add(1, "day");
+    var prevMonth = reportInterval.start.clone().add(-1, "day");
+    reportInterval.nextHash =
+      "#monthly/" + nextMonth.year() + "/" + nextMonth.month();
+    reportInterval.prevHash =
+      "#monthly/" + prevMonth.year() + "/" + prevMonth.month();
+
+    var isThisMonth =
+      moment()
+        .startOf("month")
+        .startOf("day")
+        .valueOf() == reportInterval.start;
+    if (isThisMonth) {
+      reportInterval.display = "This month";
+    } else {
+      reportInterval.display = reportInterval.start.format("MMMM, YYYY");
+    }
+  }
+
+  if (interval == "#alltime") {
+    reportInterval = {
+      interval: "alltime",
+      start: moment("1970-01-01").startOf("day"),
+      end: moment().endOf("day"),
+      display: "All time"
+    };
+  }
+
+  return reportInterval;
 }
 
 function search(e) {
@@ -126,13 +223,29 @@ function search(e) {
 
 $(document).ready(function() {
   $(window).bind("hashchange", () => {
-    var reportDate = getReportDate();
-    renderReport(reportDate);
+    var reportInterval = getReportInterval();
+    renderReport(reportInterval);
   });
 
-  // initial hash change
+  // // initial hash change
   $(window).trigger("hashchange");
 
-  // subscribe to search updates
-  $("#id-search-bar").keyup(debounce(search, 250, {}));
+  // // subscribe to search updates
+  // $("#id-search-bar").keyup(debounce(search, 250, {}));
+
+  $(window).keyup(function(e) {
+    switch (e.key) {
+      case "ArrowRight":
+        $("#id-next-interval-link")
+          .get(0)
+          .click();
+        break;
+
+      case "ArrowLeft":
+        $("#id-prev-interval-link")
+          .get(0)
+          .click();
+        break;
+    }
+  });
 });
