@@ -2,6 +2,7 @@
 pushd extension
 rollup -i js/collector.js -f iife -o js/dist/collector-bundle.js
 rollup -i js/dashboard.js -f iife -o js/dist/dashboard-bundle.js
+rollup -i js/listener.js -f iife -o js/dist/listener-bundle.js
 popd
 
 rm -rfv attention-monster.zip

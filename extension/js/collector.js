@@ -53,6 +53,5 @@ class Collector {
 var collector = new Collector();
 collector.run();
 
-// report some stats
 db.events.count(count => logger.log("Events in database:", count));
 db.icons.count(count => logger.log("Icons in database:", count));

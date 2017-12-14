@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Attention Monster",
-  "version": "0.4",
+  "version": "0.5.1",
   "description":
     "Attention Monster helps you to manage your Instant Gratification Monkey by keeping an eye on your browsing habits.",
   "icons": {
@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/listener.js"]
+      "js": ["js/dist/listener-bundle.js"]
     }
   ]
 }
