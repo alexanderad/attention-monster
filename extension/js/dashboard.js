@@ -1,8 +1,8 @@
 import logger from "./logger.js";
 import db from "./db.js";
 import reporter from "./reporter.js";
-import debounce from "./lib/debounce.js";
 import randomFutureQuote from "./future.js";
+import debounce from "./lib/debounce.min.js";
 
 function renderReport(reportInterval, query) {
   Promise.resolve().then(() => {
