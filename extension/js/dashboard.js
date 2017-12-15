@@ -20,8 +20,8 @@ function renderReport(reportInterval, query) {
     if (reportInterval.start > moment()) {
       var quote = randomFutureQuote();
       $("#id-no-data-message").html(
-        `<div>${quote[0]}</div>
-         <div style="float:right">&mdash; ${quote[1]}</div>
+        `<div class="quote">${quote[0]}</div>
+         <div class="u-pull-right quote-author">&mdash; ${quote[1]}</div>
         `
       );
       $("#id-no-data-container").fadeIn();
