@@ -18,11 +18,10 @@ function renderReport(reportInterval, query) {
     // console.log(moment());
 
     if (reportInterval.start > moment()) {
-      console.log("here");
       var quote = randomFutureQuote();
       $("#id-no-data-message").html(
         `<div>${quote[0]}</div>
-        <div style="float:right">&mdash; ${quote[1]}</div>
+         <div style="float:right">&mdash; ${quote[1]}</div>
         `
       );
       $("#id-no-data-container").fadeIn();
@@ -117,13 +116,13 @@ function getReportInterval() {
     var reportYear, reportWeek;
     if (hashSplit.length == 1) {
       reportYear = now.year();
-      reportWeek = now.week();
+      reportWeek = now.week() - 1;
     } else {
       reportYear = hashSplit[1];
       reportWeek = hashSplit[2];
     }
 
-    var week = moment(reportYear + "-01-01").add(reportWeek - 1, "weeks");
+    var week = moment(reportYear + "-01-01").add(reportWeek, "weeks");
     reportInterval = {
       interval: "weekly",
       start: week
@@ -135,12 +134,18 @@ function getReportInterval() {
         .endOf("week")
         .endOf("day")
     };
-    var nextWeek = reportInterval.start.clone().add(1, "week");
-    var prevWeek = reportInterval.start.clone().add(-1, "week");
+    var nextWeek = reportInterval.start
+      .clone()
+      .add(1, "week")
+      .endOf("week");
+    var prevWeek = reportInterval.start
+      .clone()
+      .add(-1, "week")
+      .startOf("week");
     reportInterval.nextHash =
-      "#weekly/" + nextWeek.year() + "/" + nextWeek.week();
+      "#weekly/" + nextWeek.year() + "/" + (nextWeek.week() - 1);
     reportInterval.prevHash =
-      "#weekly/" + prevWeek.year() + "/" + prevWeek.week();
+      "#weekly/" + prevWeek.year() + "/" + (prevWeek.week() - 1);
 
     var isThisWeek =
       moment()
@@ -206,6 +211,9 @@ function getReportInterval() {
       display: "All time"
     };
   }
+
+  $(".menu-link").removeClass("active");
+  $(".menu-link." + reportInterval.interval).addClass("active");
 
   return reportInterval;
 }

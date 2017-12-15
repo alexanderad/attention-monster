@@ -144,3 +144,8 @@ a.active {
 .font-size-80 {
   font-size: 80%;
 }
+
+#id-no-data-message {
+  padding-top: 50px;
+  font-size: 1.9rem;
+}
