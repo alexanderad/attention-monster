@@ -10,12 +10,10 @@ function renderReport(reportInterval, query) {
     $("#id-next-interval-link").attr("href", reportInterval.nextHash);
     $("#id-current-interval").text(reportInterval.display);
 
-    $("#id-no-data-container, #id-data-container").hide();
-    // $("#id-loading-container").show();
+    $(
+      "#id-no-data-container, #id-data-container, #id-loading-container"
+    ).hide();
     $("#id-data > tbody").empty();
-
-    // console.log(reportInterval.start);
-    // console.log(moment());
 
     if (reportInterval.start > moment()) {
       var quote = randomFutureQuote();
@@ -25,20 +23,22 @@ function renderReport(reportInterval, query) {
         `
       );
       $("#id-no-data-container").fadeIn();
+      return;
+    } else {
+      $("#id-loading-container").show();
     }
 
-    /*
-  reporter
-    .onScreenTimeReport(start, end, query)
-    .then(data => {
-      let records = data.records;
-      let stats = data.stats;
+    reporter
+      .onScreenTimeReport(reportInterval.start, reportInterval.end, query)
+      .then(data => {
+        let records = data.records;
+        let stats = data.stats;
 
-      let grid = $("#id-data > tbody");
-      records.forEach(function(record, idx) {
-        let iconUrl = record.icon;
-        if (iconUrl === undefined) iconUrl = "../icons/default-favicon.png";
-        let recordRendered = `
+        let grid = $("#id-data > tbody");
+        records.forEach(function(record, idx) {
+          let iconUrl = record.icon;
+          if (iconUrl === undefined) iconUrl = "../icons/default-favicon.png";
+          let recordRendered = `
             <tr>
                 <td>
                     <div class="record-row-icon truncate">
@@ -51,21 +51,19 @@ function renderReport(reportInterval, query) {
                   .humanize()}</td>
             </tr>
         `;
-        grid.append(recordRendered);
-        
-      });
+          grid.append(recordRendered);
+        });
 
-      $("#id-loading-container").hide();
-      $("#id-data-container").fadeIn();
-    })
-    .catch(err => {
-      setTimeout(() => {
         $("#id-loading-container").hide();
-        $("#id-no-data-message").text("No data for this date.");
-        $("#id-no-data-container").fadeIn();
-      }, 400);
-    });
-    */
+        $("#id-data-container").fadeIn();
+      })
+      .catch(err => {
+        setTimeout(() => {
+          $("#id-loading-container").hide();
+          $("#id-no-data-message").text("No data for this date.");
+          $("#id-no-data-container").fadeIn();
+        }, 400);
+      });
   });
 }
 

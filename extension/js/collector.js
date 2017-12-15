@@ -55,3 +55,10 @@ collector.run();
 
 db.events.count(count => logger.log("Events in database:", count));
 db.icons.count(count => logger.log("Icons in database:", count));
+navigator.webkitTemporaryStorage.queryUsageAndQuota(usedBytes => {
+  logger.log(
+    "Database storage used:",
+    (usedBytes / 1024 / 1024).toFixed(2),
+    "Mb"
+  );
+}, null);

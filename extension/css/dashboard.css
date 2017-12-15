@@ -146,10 +146,13 @@ a.active {
 }
 
 .quote {
-  padding-top: 50px;
   font-size: 2rem;
 }
 
 .quote-author {
   font-size: 1.7rem;
+}
+
+.no-data-container {
+  padding-top: 50px;
 }
