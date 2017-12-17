@@ -15,13 +15,9 @@ function renderReport(reportInterval, query) {
     ).hide();
     $("#id-data > tbody").empty();
 
-    if (reportInterval.start > moment()) {
-      var quote = randomFutureQuote();
-      $("#id-no-data-message").html(
-        `<div class="quote">${quote[0]}</div>
-         <div class="u-pull-right quote-author">&mdash; ${quote[1]}</div>
-        `
-      );
+    var isInFuture = reportInterval.start > moment();
+    if (isInFuture) {
+      $("#id-no-data-message").html(getRandomFutureQuoteMessage());
       $("#id-no-data-container").fadeIn();
       return;
     } else {
@@ -60,11 +56,30 @@ function renderReport(reportInterval, query) {
       .catch(err => {
         setTimeout(() => {
           $("#id-loading-container").hide();
-          $("#id-no-data-message").text("No data for this date.");
+
+          var message = "No data for this date.";
+          var isToday =
+            moment()
+              .startOf("day")
+              .valueOf() == reportInterval.start;
+          if (isToday) {
+            message =
+              "Your Attention Monster doesn't yet have any stats to show. Keep browsing and check back later!";
+          }
+
+          $("#id-no-data-message").html(message);
           $("#id-no-data-container").fadeIn();
         }, 400);
       });
   });
+}
+
+function getRandomFutureQuoteMessage() {
+  var quote = randomFutureQuote();
+  return `
+    <div class="quote">${quote[0]}</div>
+    <div class="u-pull-right quote-author">&mdash; ${quote[1]}</div>
+  `;
 }
 
 function getReportInterval() {

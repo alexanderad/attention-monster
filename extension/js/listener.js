@@ -12,7 +12,6 @@ class Listener {
   }
 
   sendReport(e) {
-    console.log("sending report", e);
     chrome.runtime.sendMessage({ type: e.type });
   }
 

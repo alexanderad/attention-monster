@@ -147,12 +147,18 @@ a.active {
 
 .quote {
   font-size: 2rem;
+  font-style: italic;
+}
+
+.no-data-message {
+  font-size: 2rem;
 }
 
 .quote-author {
   font-size: 1.7rem;
 }
 
-.no-data-container {
+.no-data-container,
+.loading-container {
   padding-top: 50px;
 }
