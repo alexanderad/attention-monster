@@ -24,8 +24,10 @@ function renderReport(reportInterval, query) {
       $("#id-loading-container").show();
     }
 
+    var start = reportInterval.start.valueOf();
+    var end = reportInterval.end.valueOf();
     reporter
-      .onScreenTimeReport(reportInterval.start, reportInterval.end, query)
+      .onScreenTimeReport(start, end, query)
       .then(data => {
         let records = data.records;
         let stats = data.stats;
@@ -42,9 +44,9 @@ function renderReport(reportInterval, query) {
                         <span>${record.domain}</span>
                     </div>
                 </td>
-                <td class="no-wrap">${moment
-                  .duration(record.totalTime)
-                  .humanize()}</td>
+                <td class="no-wrap">
+                  ${moment.duration(record.totalTime).humanize()}
+                </td>
             </tr>
         `;
           grid.append(recordRendered);
@@ -54,6 +56,7 @@ function renderReport(reportInterval, query) {
         $("#id-data-container").fadeIn();
       })
       .catch(err => {
+        console.log(err);
         setTimeout(() => {
           $("#id-loading-container").hide();
 
@@ -231,17 +234,6 @@ function getReportInterval() {
   return reportInterval;
 }
 
-function search(e) {
-  var reportDate = getReportDate();
-
-  var query = $.trim(e.target.value);
-  if (query.length >= 2) {
-    renderReport(reportDate, query);
-  } else {
-    renderReport(reportDate);
-  }
-}
-
 $(document).ready(function() {
   $(window).bind("hashchange", () => {
     var reportInterval = getReportInterval();
@@ -250,9 +242,6 @@ $(document).ready(function() {
 
   // // initial hash change
   $(window).trigger("hashchange");
-
-  // // subscribe to search updates
-  // $("#id-search-bar").keyup(debounce(search, 250, {}));
 
   $(window).keyup(function(e) {
     switch (e.key) {

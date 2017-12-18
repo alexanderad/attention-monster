@@ -1,6 +1,6 @@
 #!/bin/bash
 pushd extension
-rollup -i js/collector.js -f iife -o js/dist/collector-bundle.js
+rollup -i js/background.js -f iife -o js/dist/background-bundle.js
 rollup -i js/dashboard.js -f iife -o js/dist/dashboard-bundle.js
 rollup -i js/listener.js -f iife -o js/dist/listener-bundle.js
 popd

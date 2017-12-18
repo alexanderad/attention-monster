@@ -31,57 +31,59 @@ class Reporter {
         return iconLookup;
       })
       .then(iconLookup => {
-        return db.events
-          .where("time")
-          .between(start, end)
-          .filter(function(item) {
-            if (!query) {
-              return item;
-            }
-            return item.domain.includes(query);
-          })
-          .toArray(items => {
-            let records = {};
-            let stats = { totalTime: 0, dayStart: start, dayEnd: end };
-            logger.log("items to account", items.length);
+        return (
+          db.events
+            .where("time")
+            .between(start, end)
+            // .filter(function(item) {
+            //   if (!query) {
+            //     return item;
+            //   }
+            //   return item.domain.includes(query);
+            // })
+            .toArray(items => {
+              let records = {};
+              let stats = { totalTime: 0, dayStart: start, dayEnd: end };
+              logger.log("items to account", items.length);
 
-            for (let i = 1; i < items.length; i++) {
-              let domain = items[i - 1].domain;
-              let accountableTime = Math.min(
-                items[i].time - items[i - 1].time,
-                this.IDLE_MAX_ACCOUNTABLE
-              );
-              let interval = [
-                items[i - 1].time,
-                items[i - 1].time + accountableTime
-              ];
-              if (records[domain] === undefined) {
-                records[domain] = {
-                  domain: domain,
-                  totalTime: 0,
-                  timeIntervals: [],
-                  icon: iconLookup[domain]
-                };
+              for (let i = 1; i < items.length; i++) {
+                let domain = items[i - 1].domain;
+                let accountableTime = Math.min(
+                  items[i].time - items[i - 1].time,
+                  this.IDLE_MAX_ACCOUNTABLE
+                );
+                let interval = [
+                  items[i - 1].time,
+                  items[i - 1].time + accountableTime
+                ];
+                if (records[domain] === undefined) {
+                  records[domain] = {
+                    domain: domain,
+                    totalTime: 0,
+                    timeIntervals: [],
+                    icon: iconLookup[domain]
+                  };
+                }
+                records[domain].totalTime += accountableTime;
+                records[domain].timeIntervals.push(interval);
+
+                stats.totalTime += accountableTime;
               }
-              records[domain].totalTime += accountableTime;
-              records[domain].timeIntervals.push(interval);
+              if (items.length > 0) {
+                stats.dayStart = items[0].time;
+                stats.dayEnd = items[items.length - 1].time;
+              }
 
-              stats.totalTime += accountableTime;
-            }
-            if (items.length > 0) {
-              stats.dayStart = items[0].time;
-              stats.dayEnd = items[items.length - 1].time;
-            }
-
-            records = Object.keys(records).map(key => records[key]);
-            records.sort(function(a, b) {
-              return b.totalTime - a.totalTime;
-            });
-            if (!records.length) {
-              throw new Error("No data");
-            }
-            return { records: records, stats: stats };
-          });
+              records = Object.keys(records).map(key => records[key]);
+              records.sort(function(a, b) {
+                return b.totalTime - a.totalTime;
+              });
+              if (!records.length) {
+                throw new Error("No data");
+              }
+              return { records: records, stats: stats };
+            })
+        );
       });
   }
 
@@ -101,9 +103,7 @@ class Reporter {
       let offset = (start - chartStart) / chartWidth * 100;
       bar.append(
         $(
-          `<span class="bar" style="left: ${offset}%; width: ${
-            width
-          }%">&nbsp;</span>`
+          `<span class="bar" style="left: ${offset}%; width: ${width}%">&nbsp;</span>`
         )
       );
     }
