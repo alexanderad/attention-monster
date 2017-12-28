@@ -6,6 +6,16 @@ class Reporter {
     this.IDLE_MAX_ACCOUNTABLE = 60 * 1000; // milliseconds
   }
 
+  normalizeDomain(domain) {
+    var replacements = [["www.", ""]];
+    for (let i = 0; i < replacements.length; i++) {
+      var searchValue = replacements[i][0];
+      var replaceValue = replacements[i][1];
+      domain = domain.replace(searchValue, replaceValue);
+    }
+    return domain;
+  }
+
   onScreenTimeReport(start, end, query) {
     /*
       Returns a promise with results: array sorted by total time
@@ -58,7 +68,7 @@ class Reporter {
                 ];
                 if (records[domain] === undefined) {
                   records[domain] = {
-                    domain: domain,
+                    domain: this.normalizeDomain(domain),
                     totalTime: 0,
                     timeIntervals: [],
                     icon: iconLookup[domain]

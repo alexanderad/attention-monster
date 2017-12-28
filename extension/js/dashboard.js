@@ -41,7 +41,13 @@ function renderReport(reportInterval, query) {
                 <td>
                     <div class="record-row-icon truncate">
                         <span><img src="${iconUrl}" width="16"></span>
-                        <span>${record.domain}</span>
+                        <span class="truncate" style="max-width: 220px">
+                          <a href="http://${
+                            record.domain
+                          }" class="no-underline black">
+                            ${record.domain}
+                          </a>
+                        </span>
                     </div>
                 </td>
                 <td class="no-wrap">

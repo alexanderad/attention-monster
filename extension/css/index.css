@@ -1,3 +1,7 @@
+.container {
+  max-width: 850px;
+}
+
 .stacked-bar-container {
   border: solid 1px #f2f2f2;
   height: 20px;
@@ -85,6 +89,10 @@ a.active {
   text-decoration: none;
 }
 
+.black {
+  color: black;
+}
+
 /* Loading: https://martinwolf.org/blog/2015/01/pure-css-loadingloading-dots-animation */
 @keyframes blink {
   /**
@@ -161,4 +169,16 @@ a.active {
 .no-data-container,
 .loading-container {
   padding-top: 50px;
+}
+
+.data-table {
+  margin-left: 28px;
+  margin-right: 25px;
+}
+
+.summary {
+  font-size: 1.2em;
+  line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0;
 }
