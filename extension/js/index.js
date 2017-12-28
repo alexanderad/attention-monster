@@ -58,6 +58,8 @@ function renderReport(reportInterval, query) {
           grid.append(recordRendered);
         });
 
+        $("#id-total-time").text(moment.duration(stats.totalTime).humanize());
+
         $("#id-loading-container").hide();
         $("#id-data-container").fadeIn();
       })
@@ -246,7 +248,7 @@ $(document).ready(function() {
     renderReport(reportInterval);
   });
 
-  // // initial hash change
+  // initial hash change
   $(window).trigger("hashchange");
 
   $(window).keyup(function(e) {

@@ -69,13 +69,19 @@
             <div class="row">
                 <div class="five columns">
                     <table id="id-data" class="u-full-width data-table">
+                        <thead>
+                            <th>Destination</th>
+                            <th>Time Spent</th>
+                        </thead>
                         <tbody>
                         </tbody>
                     </table>
                 </div>
                 <div class="five columns u-pull-right summary">
-                    Total time is 4 hours.
-                    <br />
+                    <div>Total time is
+                        <span id="id-total-time" class="summary-total-time"></span>
+                    </div>
+                    <div id="chart"></div>
                 </div>
             </div>
 
@@ -87,6 +93,6 @@
 <script src="../js/lib/dexie.min.js" type="text/javascript"></script>
 <script src="../js/lib/moment.min.js" type="text/javascript"></script>
 <script src="../js/lib/jquery.min.js" type="text/javascript"></script>
-<script src="../js/dist/dashboard-bundle.js" type="text/javascript"></script>
+<script src="../js/dist/index-bundle.js" type="text/javascript"></script>
 
 </html>

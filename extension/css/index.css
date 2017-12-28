@@ -182,3 +182,7 @@ a.active {
   font-weight: 300;
   letter-spacing: 0;
 }
+
+.summary-total-time {
+  font-weight: 400;
+}
