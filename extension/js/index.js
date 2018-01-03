@@ -68,7 +68,7 @@ function renderReport(reportInterval, query) {
         setTimeout(() => {
           $("#id-loading-container").hide();
 
-          var message = "No data for this date.";
+          var message = "No data for this time interval.";
           var isToday =
             moment()
               .startOf("day")

@@ -53,7 +53,11 @@ class Reporter {
             // })
             .toArray(items => {
               let records = {};
-              let stats = { totalTime: 0, dayStart: start, dayEnd: end };
+              let stats = {
+                totalTime: 0,
+                intervalStart: start,
+                intervalEnd: end
+              };
               logger.log("items to account", items.length);
 
               for (let i = 1; i < items.length; i++) {
@@ -80,8 +84,8 @@ class Reporter {
                 stats.totalTime += accountableTime;
               }
               if (items.length > 0) {
-                stats.dayStart = items[0].time;
-                stats.dayEnd = items[items.length - 1].time;
+                stats.intervalStart = items[0].time;
+                stats.intervalEnd = items[items.length - 1].time;
               }
 
               records = Object.keys(records).map(key => records[key]);
@@ -97,6 +101,7 @@ class Reporter {
       });
   }
 
+  /*
   frequencyChart(chartStart, chartEnd, intervals) {
     chartStart = chartStart.toFixed(2);
     chartEnd = chartEnd.toFixed(2);
@@ -119,6 +124,7 @@ class Reporter {
     }
     return bar;
   }
+  */
 }
 
 const reporter = new Reporter();

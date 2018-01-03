@@ -186,3 +186,7 @@ a.active {
 .summary-total-time {
   font-weight: 400;
 }
+
+.chart {
+  width: 100%;
+}
