@@ -1,4 +1,4 @@
-import debounce from "./lib/debounce.min.js";
+import debounce from "../third-party/js/debounce.min.js";
 
 class Listener {
   /**

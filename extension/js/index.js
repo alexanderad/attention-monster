@@ -2,7 +2,7 @@ import logger from "./logger.js";
 import db from "./db.js";
 import reporter from "./reporter.js";
 import randomFutureQuote from "./future.js";
-import debounce from "./lib/debounce.min.js";
+import debounce from "../third-party/js/debounce.min.js";
 
 function renderReport(reportInterval, query) {
   Promise.resolve().then(() => {
