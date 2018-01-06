@@ -2,7 +2,7 @@ import logger from "./logger.js";
 import db from "./db.js";
 import reporter from "./reporter.js";
 import randomFutureQuote from "./future.js";
-import debounce from "../third-party/js/debounce.min.js";
+import debounce from "../vendor/js/debounce.min.js";
 
 function renderReport(reportInterval, query) {
   Promise.resolve().then(() => {
@@ -39,18 +39,18 @@ function renderReport(reportInterval, query) {
           let recordRendered = `
             <tr>
                 <td>
-                    <div class="record-row-icon truncate">
-                        <span><img src="${iconUrl}" width="16"></span>
-                        <span class="truncate" style="max-width: 220px">
+                    <div class="record-row-icon is-truncated">
+                        <span><img src="${iconUrl}" width="18"></span>
+                        <span class="is-truncated" style="max-width: 220px">
                           <a href="http://${
                             record.domain
-                          }" class="no-underline black">
+                          }" class="has-no-underline is-black">
                             ${record.domain}
                           </a>
                         </span>
                     </div>
                 </td>
-                <td class="no-wrap">
+                <td class="has-no-wrap">
                   ${moment
                     .duration(record.totalTime)
                     .format("d [days] h [hours] m [minutes]", {
@@ -63,7 +63,14 @@ function renderReport(reportInterval, query) {
           grid.append(recordRendered);
         });
 
-        $("#id-total-time").text(moment.duration(stats.totalTime).humanize());
+        $("#id-total-time").text(
+          moment
+            .duration(stats.totalTime)
+            .format("d [days] h [hours] m [minutes]", {
+              largest: 2,
+              minValue: 1
+            })
+        );
 
         $("#id-loading-container").hide();
         $("#id-data-container").fadeIn();
@@ -93,8 +100,8 @@ function renderReport(reportInterval, query) {
 function getRandomFutureQuoteMessage() {
   var quote = randomFutureQuote();
   return `
-    <div class="quote">${quote[0]}</div>
-    <div class="u-pull-right quote-author">&mdash; ${quote[1]}</div>
+    <div class="is-italic is-size-4 is-light">${quote[0]}</div>
+    <div class="is-pulled-right is-size-6">&mdash; ${quote[1]}</div>
   `;
 }
 
@@ -241,8 +248,8 @@ function getReportInterval() {
     };
   }
 
-  $(".menu-link").removeClass("active");
-  $(".menu-link." + reportInterval.interval).addClass("active");
+  $(".menu-link").removeClass("is-active");
+  $(".menu-link." + reportInterval.interval).addClass("is-active");
 
   return reportInterval;
 }

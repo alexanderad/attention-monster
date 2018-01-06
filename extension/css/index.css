@@ -1,41 +1,52 @@
+/* 
+Poor Man's Debug
+*/
 div {
-  outline: dashed 1px coral;
+  outline: solid 1px coral;
 }
 
-.container {
-  max-width: 900px;
-  padding-top: 40px;
+/*
+Overall fonts, colors & text
+*/
+
+.is-light {
+  font-weight: 100;
 }
 
-.header-size {
-  font-size: 2.4rem;
+.is-black {
+  color: black;
 }
 
-.stacked-bar-container {
-  border: solid 1px #f2f2f2;
-  height: 20px;
-  position: relative;
+.is-italic {
+  font-style: italic;
 }
 
-.stacked-bar-container > .bar {
-  height: 100%;
-  background-color: #33c3f0;
-  position: absolute;
-}
-
-.stacked-bar-container > .bar:hover {
-  background-color: gold;
-}
-
-.no-wrap {
+.has-no-wrap {
   white-space: nowrap;
 }
 
-.truncate {
+.is-truncated {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/*
+Sidebar menu
+*/
+
+.menu-list a.is-active {
+  color: black;
+  background-color: #f5f5f5;
+}
+
+.menu-list a:hover {
+  background-color: aliceblue;
+}
+
+/*
+Report table
+*/
 
 .record-row-icon {
   display: table;
@@ -51,151 +62,23 @@ div {
   padding-right: 5px;
 }
 
-.very-middle-container {
-  display: table;
+.record-icon {
+  background-repeat: no-repeat;
+  background-size: 16px;
+  height: 16px;
+  width: 16px;
 }
 
-.menu-link {
-  padding-right: 20px;
-  text-decoration: none;
-  color: black;
+/*
+Columns
+*/
+
+.is-fully-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-a.active {
-  font-weight: bold;
-}
-
-.logo {
-  padding-right: 20px;
-  width: 28px;
-  vertical-align: -4px;
-}
-
-.very-middle {
-  vertical-align: middle;
-  display: table-cell;
-}
-
-.very-middle-container .icon-left {
-  padding-right: 5px;
-  font-size: 32px;
-}
-
-.very-middle-container .icon-right {
-  padding-left: 5px;
-  font-size: 32px;
-}
-
-.header {
-  margin-top: 5%;
-}
-
-.footer {
-  margin-bottom: 5%;
-}
-
-.no-underline {
-  text-decoration: none;
-}
-
-.black {
-  color: black;
-}
-
-/* Loading: https://martinwolf.org/blog/2015/01/pure-css-loadingloading-dots-animation */
-@keyframes blink {
-  /**
-   * At the start of the animation the dot
-   * has an opacity of .2
-   */
-  0% {
-    opacity: 0.2;
-  }
-  /**
-   * At 20% the dot is fully visible and
-   * then fades out slowly
-   */
-  20% {
-    opacity: 1;
-  }
-  /**
-   * Until it reaches an opacity of .2 and
-   * the animation can start again
-   */
-  100% {
-    opacity: 0.2;
-  }
-}
-
-.loading span {
-  animation-name: blink;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  animation-fill-mode: both;
-}
-
-.loading span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loading span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-.center {
-  text-align: center;
-}
-
-.right {
-  text-align: right;
-}
-
-.hidden {
-  display: none;
-}
-
-.font-size-75 {
-  font-size: 75%;
-}
-
-.font-size-80 {
-  font-size: 80%;
-}
-
-.quote {
-  font-size: 2rem;
-  font-style: italic;
-}
-
-.no-data-message {
-  font-size: 2rem;
-}
-
-.quote-author {
-  font-size: 1.7rem;
-}
-
-.no-data-container,
-.loading-container {
-  padding-top: 50px;
-}
-
-.data-table {
-  margin-left: 28px;
-  margin-right: 25px;
-}
-
-.summary {
-  font-size: 1.2em;
-  line-height: 1.6;
-  font-weight: 300;
-  letter-spacing: 0;
-}
-
-.summary-total-time {
-  font-weight: 400;
-}
-
-.chart {
-  width: 100%;
+.is-flex-1 {
+  flex: 1;
 }

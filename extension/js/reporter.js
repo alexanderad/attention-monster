@@ -73,6 +73,7 @@ class Reporter {
                 if (records[domain] === undefined) {
                   records[domain] = {
                     domain: this.normalizeDomain(domain),
+                    originalDomain: domain,
                     totalTime: 0,
                     timeIntervals: [],
                     icon: iconLookup[domain]

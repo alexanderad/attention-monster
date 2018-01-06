@@ -16,7 +16,7 @@
   "permissions": ["tabs", "storage"],
   "background": {
     "persistent": false,
-    "scripts": ["third-party/js/dexie.min.js", "build/background-bundle.js"]
+    "scripts": ["vendor/js/dexie.min.js", "build/background-bundle.js"]
   },
   "content_scripts": [
     {
