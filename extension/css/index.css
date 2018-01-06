@@ -1,5 +1,14 @@
+div {
+  outline: dashed 1px coral;
+}
+
 .container {
-  max-width: 850px;
+  max-width: 900px;
+  padding-top: 40px;
+}
+
+.header-size {
+  font-size: 2.4rem;
 }
 
 .stacked-bar-container {

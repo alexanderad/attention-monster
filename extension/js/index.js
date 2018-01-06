@@ -51,7 +51,12 @@ function renderReport(reportInterval, query) {
                     </div>
                 </td>
                 <td class="no-wrap">
-                  ${moment.duration(record.totalTime).humanize()}
+                  ${moment
+                    .duration(record.totalTime)
+                    .format("d [days] h [hours] m [minutes]", {
+                      largest: 2,
+                      minValue: 1
+                    })}
                 </td>
             </tr>
         `;
