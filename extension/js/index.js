@@ -6,14 +6,12 @@ import debounce from "../vendor/js/debounce.min.js";
 
 function renderReport(reportInterval, query) {
   Promise.resolve().then(() => {
+    $(".page-partial").hide();
+    $("#id-data > tbody").empty();
+
     $("#id-prev-interval-link").attr("href", reportInterval.prevHash);
     $("#id-next-interval-link").attr("href", reportInterval.nextHash);
     $("#id-current-interval").text(reportInterval.display);
-
-    $(
-      "#id-no-data-container, #id-data-container, #id-loading-container"
-    ).hide();
-    $("#id-data > tbody").empty();
 
     var isInFuture = reportInterval.start > moment();
     if (isInFuture) {

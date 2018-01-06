@@ -19,10 +19,10 @@
                 <div class="column is-one-quarter">
                     <div class="level">
                         <div class="level-left">
-                            <figure class="image is-64x64">
+                            <figure class="image is-64x64 is-opaque-75">
                                 <img class="logo" src="../icons/icon128.png">
                             </figure>
-                            <p class="subtitle is-4 is-light">
+                            <p class="subtitle is-4 is-light is-grey logo-desc">
                                 Attention
                                 <br /> Monster
                             </p>
@@ -69,12 +69,8 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-one-quarter">
-
-
                     <aside class="menu">
-                        <p class="menu-label">
-                            Time Stats
-                        </p>
+                        <p class="menu-label">Time Stats</p>
                         <ul class="menu-list">
                             <li>
                                 <a class="menu-link daily is-active" href="#daily">Daily</a>
@@ -82,15 +78,20 @@
                             <li>
                                 <a class="menu-link weekly" href="#weekly">Weekly</a>
                             </li>
-
                             <li>
                                 <a class="menu-link monthly" href="#monthly">Monthly</a>
                             </li>
-
                             <li>
                                 <a class="menu-link alltime" href="#alltime">All Time</a>
                             </li>
-
+                        </ul>
+                        <p class="menu-label">
+                            Options
+                        </p>
+                        <ul class="menu-list">
+                            <li>
+                                <a class="menu-link" href="#clean-browsing-data">Clean browsing data</a>
+                            </li>
                         </ul>
                         <p class="menu-label">
                             Things to know
@@ -102,17 +103,15 @@
                             <li>
                                 <a class="menu-link" href="#about">About</a>
                             </li>
-
-
                         </ul>
                     </aside>
-
-
                 </div>
+
+                <!-- container with main content -->
                 <div class="column is-fully-centered">
 
                     <!-- container with loading indicator -->
-                    <div id="id-loading-container">
+                    <div class="page-partial loading-container" id="id-loading-container">
                         <div class="loading is-size-4 is-light">
                             <span>uno</span>
                             <span>dos</span>
@@ -121,17 +120,30 @@
                     </div>
 
                     <!-- container with message "No data" -->
-                    <div class="no-data-container" id="id-no-data-container">
+                    <div class="page-partial no-data-container" id="id-no-data-container">
                         <div class="is-size-4 is-light" id="id-no-data-message" class="no-data-message">
                         </div>
                     </div>
 
                     <!-- container with all the data, including stats -->
-                    <div class="data-container is-flex-1" id="id-data-container">
+                    <div class="page-partial data-container is-flex-1" id="id-data-container">
                         <table id="id-data" class="table is-striped is-hoverable is-fullwidth">
                             <tbody>
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- container with all the data, including stats -->
+                    <div class="page-partial data-container is-flex-1" id="id-data-container">
+                        <table id="id-data" class="table is-striped is-hoverable is-fullwidth">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- container with about data -->
+                    <div class="page-partial about-container is-flex-1" id="id-about-container">
+                        about
                     </div>
 
                 </div>

@@ -2,7 +2,7 @@
 Poor Man's Debug
 */
 div {
-  outline: solid 1px coral;
+  /* outline: solid 1px coral; */
 }
 
 /*
@@ -15,6 +15,14 @@ Overall fonts, colors & text
 
 .is-black {
   color: black;
+}
+
+.is-grey {
+  color: #7a7a7a;
+}
+
+.is-opaque-75 {
+  opacity: 0.75;
 }
 
 .is-italic {
@@ -35,9 +43,14 @@ Overall fonts, colors & text
 Sidebar menu
 */
 
-.menu-list a.is-active {
+.menu-list a {
+  border-radius: 0.45rem;
+}
+
+.menu-list a.is-active,
+.menu-list a.is-active:hover {
   color: black;
-  background-color: #f5f5f5;
+  background-color: gainsboro;
 }
 
 .menu-list a:hover {
@@ -81,4 +94,13 @@ Columns
 
 .is-flex-1 {
   flex: 1;
+}
+
+/*
+Logo
+*/
+
+.logo-desc {
+  line-height: 0.9;
+  padding-left: 0.35rem;
 }
