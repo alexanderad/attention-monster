@@ -294,4 +294,43 @@ $(document).ready(function() {
         break;
     }
   });
+
+  $("#id-clean-data-button").bind("click", e => {
+    var timeRange = $("#id-clean-data-range")
+      .find(":selected")
+      .val();
+    switch (timeRange) {
+      case "ALL":
+        var timeIntervalStart = moment("1970-01-01");
+        var timeIntervalEnd = moment(moment() + moment.duration("P1D"));
+        break;
+
+      default:
+        var timeIntervalEnd = moment();
+        var timeIntervalStart = moment(
+          timeIntervalEnd - moment.duration(timeRange)
+        );
+    }
+
+    $("#id-clean-data-button > span.icon").show();
+    $("#id-clean-data-button > span.clean-text").text("Cleaning...");
+    reporter
+      .cleanBrowsingData(timeIntervalStart, timeIntervalEnd)
+      .then(cleanedCount => {
+        console.log("removed", cleanedCount);
+        console.log("yay");
+        $("#id-clean-data-button > span.icon").hide();
+        $("#id-clean-data-button > span.clean-text").text("Done!");
+        $("#id-clean-data-button")
+          .addClass("is-success")
+          .removeClass("is-danger");
+
+        setTimeout(() => {
+          $("#id-clean-data-button > span.clean-text").text("Clean");
+          $("#id-clean-data-button")
+            .removeClass("is-success")
+            .addClass("is-danger");
+        }, 2500);
+      });
+  });
 });

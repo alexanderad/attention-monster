@@ -16,6 +16,15 @@ class Reporter {
     return domain;
   }
 
+  cleanBrowsingData(start, end) {
+    return new Promise((resolve, reject) => {
+      console.log("report clean", start, end);
+      setTimeout(() => {
+        resolve(0);
+      }, 2500);
+    });
+  }
+
   onScreenTimeReport(start, end, query) {
     /*
       Returns a promise with results: array sorted by total time
