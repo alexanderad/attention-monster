@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Attention Monster</title>
     <link rel="icon" type="image/png" href="../icons/icon48.png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
     <link rel="stylesheet" href="vendor/css/loading.min.css">
     <link rel="stylesheet" href="css/index.css">
@@ -20,7 +20,9 @@
                     <div class="level">
                         <div class="level-left">
                             <figure class="image is-64x64 is-opaque-75">
-                                <img class="logo" src="../icons/icon128.png">
+                                <a href="#">
+                                    <img class="logo" src="../icons/icon128.png">
+                                </a>
                             </figure>
                             <p class="subtitle is-4 is-lighter is-grey logo-desc">
                                 Attention
@@ -34,7 +36,7 @@
                         <div class="level-left">
                             <div class="level-item has-text-centered">
                                 <div>
-                                    <p class="subtitle is-2 is-lighter">
+                                    <p class="subtitle is-3 is-lighter">
                                         <a id="id-prev-interval-link" href="#">
                                             <span class="icon">
                                                 <i class="fa fa-angle-left has-text-grey-light"></i>
@@ -69,7 +71,6 @@
             <div class="columns">
                 <div class="column is-one-quarter">
                     <aside class="menu">
-                        <p class="menu-label">Time Machine</p>
                         <ul class="menu-list">
                             <li>
                                 <a class="menu-link daily is-active" href="#daily">Daily</a>
@@ -84,9 +85,7 @@
                                 <a class="menu-link alltime" href="#alltime">All Time</a>
                             </li>
                         </ul>
-                        <p class="menu-label">
-                            Options
-                        </p>
+                        <p class="menu-label">&nbsp;</p>
                         <ul class="menu-list">
                             <li>
                                 <a class="menu-link clean-browsing-data" href="#clean-browsing-data">Clean browsing data</a>
@@ -135,7 +134,7 @@
                     <!-- container with about data -->
                     <div class="page-partial is-not-displayed is-flex-1 is-flex-start" id="id-about-container">
                         <div class="content">
-                            <h1>About</h1>
+                            <p class="subtitle is-4">About</p>
                             <p>
                                 We all spend time on the web. We try to be productive and get things done, and we try to be playful and entertain ourselves.
                                 Luckily these days that's not a question.
@@ -161,7 +160,7 @@
                     <!-- container with options -->
                     <div class="page-partial is-not-displayed is-flex-1 is-flex-start" id="id-clean-browsing-data-container">
                         <div class="content">
-                            <h1>Clean browsing data</h1>
+                            <p class="subtitle is-4">Clean browsing data</p>
                             <article class="message is-link">
                                 <div class="message-body">
                                     <ul>

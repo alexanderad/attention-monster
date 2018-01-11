@@ -1,10 +1,3 @@
-/* 
-Poor Man's Debug
-*/
-div {
-  /* outline: solid 1px coral; */
-}
-
 /*
 Overall fonts, colors & text
 */
@@ -113,6 +106,6 @@ Logo
 */
 
 .logo-desc {
-  line-height: 0.9;
+  line-height: 1;
   padding-left: 0.35rem;
 }
