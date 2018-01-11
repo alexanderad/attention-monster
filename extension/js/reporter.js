@@ -18,10 +18,14 @@ class Reporter {
 
   cleanBrowsingData(start, end) {
     return new Promise((resolve, reject) => {
-      console.log("report clean", start, end);
+      logger.log("Report cleanup", start.format(), "->", end.format());
       setTimeout(() => {
-        resolve(0);
-      }, 2500);
+        db.events
+          .where("time")
+          .between(start.valueOf(), end.valueOf())
+          .delete()
+          .then(deleteCount => resolve(deleteCount));
+      }, 500);
     });
   }
 

@@ -295,6 +295,7 @@ $(document).ready(function() {
     }
   });
 
+  // options -> cleanup browsing data handler
   $("#id-clean-data-button").bind("click", e => {
     var timeRange = $("#id-clean-data-range")
       .find(":selected")
@@ -317,8 +318,8 @@ $(document).ready(function() {
     reporter
       .cleanBrowsingData(timeIntervalStart, timeIntervalEnd)
       .then(cleanedCount => {
-        console.log("removed", cleanedCount);
-        console.log("yay");
+        logger.log("Cleaned up records: ", cleanedCount);
+
         $("#id-clean-data-button > span.icon").hide();
         $("#id-clean-data-button > span.clean-text").text("Done!");
         $("#id-clean-data-button")
