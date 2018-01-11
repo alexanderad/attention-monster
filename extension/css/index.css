@@ -9,8 +9,8 @@ div {
 Overall fonts, colors & text
 */
 
-.is-light {
-  font-weight: 100;
+.is-lighter {
+  font-weight: 300;
 }
 
 .is-black {
@@ -22,7 +22,7 @@ Overall fonts, colors & text
 }
 
 .is-opaque-75 {
-  opacity: 0.75;
+  opacity: 0.25;
 }
 
 .is-italic {
@@ -37,6 +37,10 @@ Overall fonts, colors & text
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.message-body ul {
+  margin-top: 0;
 }
 
 /*
@@ -94,6 +98,10 @@ Columns
 
 .is-flex-1 {
   flex: 1;
+}
+
+.is-flex-start {
+  align-self: flex-start;
 }
 
 /*

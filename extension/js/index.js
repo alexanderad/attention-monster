@@ -252,15 +252,34 @@ function getReportInterval() {
   return reportInterval;
 }
 
+function staticPage(pageId) {
+  $(".page-partial, #id-time-nav").hide();
+  $("#id-" + pageId + "-container").show();
+  $(".menu-link").removeClass("is-active");
+  $(".menu-link." + pageId).addClass("is-active");
+}
+
 $(document).ready(function() {
+  // page navigation
   $(window).bind("hashchange", () => {
-    var reportInterval = getReportInterval();
-    renderReport(reportInterval);
+    switch (location.hash) {
+      case "#about":
+      case "#how-it-works":
+      case "#clean-browsing-data":
+        staticPage(location.hash.substr(1));
+        break;
+
+      default:
+        $("#id-time-nav").show();
+        var reportInterval = getReportInterval();
+        renderReport(reportInterval);
+    }
   });
 
   // initial hash change
   $(window).trigger("hashchange");
 
+  // keyboard navigation
   $(window).keyup(function(e) {
     switch (e.key) {
       case "ArrowRight":
