@@ -17,6 +17,10 @@ Overall fonts, colors & text
   color: black;
 }
 
+.is-not-displayed {
+  display: none;
+}
+
 .is-grey {
   color: #7a7a7a;
 }

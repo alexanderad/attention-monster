@@ -98,7 +98,7 @@ function renderReport(reportInterval, query) {
 function getRandomFutureQuoteMessage() {
   var quote = randomFutureQuote();
   return `
-    <div class="is-italic is-size-4 is-light">${quote[0]}</div>
+    <div class="is-italic is-size-4 is-lighter">${quote[0]}</div>
     <div class="is-pulled-right is-size-6">&mdash; ${quote[1]}</div>
   `;
 }
@@ -264,7 +264,6 @@ $(document).ready(function() {
   $(window).bind("hashchange", () => {
     switch (location.hash) {
       case "#about":
-      case "#how-it-works":
       case "#clean-browsing-data":
         staticPage(location.hash.substr(1));
         break;
