@@ -38,7 +38,7 @@ function renderReport(reportInterval, query) {
             <tr>
                 <td>
                     <div class="record-row-icon is-truncated">
-                        <span><img src="${iconUrl}" width="18"></span>
+                        <span class="record-icon" style="background-image: url(${iconUrl})"></span>
                         <span class="is-truncated" style="max-width: 220px">
                           <a href="http://${
                             record.domain

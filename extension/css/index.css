@@ -77,6 +77,8 @@ Report table
 }
 
 .record-icon {
+  padding-right: 32px;
+  background-position: center center;
   background-repeat: no-repeat;
   background-size: 16px;
   height: 16px;
